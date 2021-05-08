@@ -11,4 +11,5 @@
 ## Recursos
 O projeto será desenvolvido utilizando os seguintes recursos:
 
-## Configurações
+## Instruções
+- [FDevs Quiz](https://www.notion.so/Aula-2-3dfa7105aa3543c986cb5272ff7ec264)
