@@ -1,0 +1,290 @@
+﻿[
+  {
+    "codigo": 1,
+    "titulo": "Quiz 01",
+    "imagemUrl": "https://localhost:5001/imagens/01.png",
+    "respostas": 0,
+    "nivel": "FACIL",
+    "perguntas": [
+      {
+        "titulo": "Questão 01",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04",
+            "correta": true
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 02",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": 2,
+    "titulo": "Quiz 02",
+    "imagemUrl": "https://localhost:5001/imagens/02.png",
+    "respostas": 1,
+    "nivel": "INTERMEDIARIO",
+    "perguntas": [
+      {
+        "titulo": "Questão 01",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04",
+            "correta": true
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 02",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 03",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": 3,
+    "titulo": "Quiz 03",
+    "imagemUrl": "https://localhost:5001/imagens/03.png",
+    "respostas": 1,
+    "nivel": "DIFICIL",
+    "perguntas": [
+      {
+        "titulo": "Questão 01",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04",
+            "correta": true
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 02",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 03",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 04",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "codigo": 4,
+    "titulo": "Quiz 04",
+    "imagemUrl": "https://localhost:5001/imagens/04.png",
+    "respostas": 1,
+    "nivel": "ESPECIALISTA",
+    "perguntas": [
+      {
+        "titulo": "Questão 01",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04",
+            "correta": true
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 02",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 03",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03"
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 04",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      },
+      {
+        "titulo": "Questão 05",
+        "alternativas": [
+          {
+            "titulo": "Alternativa 01"
+          },
+          {
+            "titulo": "Alternativa 02"
+          },
+          {
+            "titulo": "Alternativa 03",
+            "correta": true
+          },
+          {
+            "titulo": "Alternativa 04"
+          }
+        ]
+      }
+    ]
+  }
+]
