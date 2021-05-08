@@ -12,4 +12,4 @@
 O projeto será desenvolvido utilizando os seguintes recursos:
 
 ## Instruções
-- [FDevs Quiz](https://www.notion.so/Aula-2-3dfa7105aa3543c986cb5272ff7ec264)
+- [FDevs Quiz](https://www.notion.so/FDevs-aef65646549444928fe335dbc8606649)
