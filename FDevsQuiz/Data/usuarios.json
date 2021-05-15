@@ -1,9 +1,20 @@
 ﻿[
   {
     "codigoUsuario": 1,
-    "nomeUsuario": "Odézio",
+    "nomeUsuario": "Usuario 1",
     "pontuacao": 75,
-    "imagemUrl": "https://avatars.githubusercontent.com/OdezioRSPereira"
+    "imagemUrl": "https://avatars.githubusercontent.com/1"
+  },
+  {
+    "codigoUsuario": 2,
+    "nomeUsuario": "Usuario 2",
+    "pontuacao": 0,
+    "imagemUrl": "https://avatars.githubusercontent.com/2"
+  },
+  {
+    "codigoUsuario": 3,
+    "nomeUsuario": "Usuario 3",
+    "pontuacao": 3,
+    "imagemUrl": "https://avatars.githubusercontent.com/3"
   }
 ]
-

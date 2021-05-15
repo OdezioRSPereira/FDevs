@@ -1,6 +1,6 @@
 ﻿[
   {
-    "codigo":  1,
+    "codigo": 1,
     "titulo": "Quiz 01",
     "imagemUrl": "https://localhost:5001/imagens/01.png",
     "respostas": 0,

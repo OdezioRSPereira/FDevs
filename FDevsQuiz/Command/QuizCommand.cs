@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace FDevsQuiz.Model
+namespace FDevsQuiz.Command
 {
-    public class Quiz
+    public class QuizCommand
     {
-        public long Codigo { get; set; }
         public string Titulo { get; set; }
+        public long Respostas { get; set; }
         public string Nivel { get; set; }
         public string ImagemUrl { get; set; }
-        public ICollection<Pergunta> Perguntas { get; set; }
+        public ICollection<PerguntaCommand> Perguntas { get; set; }
     }
 }

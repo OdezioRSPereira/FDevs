@@ -1,6 +1,8 @@
-﻿namespace FDevsQuiz.Command
+﻿using System.Collections.Generic;
+
+namespace FDevsQuiz.Command
 {
-    public class AdicionarUsuarioCommand
+    public class UsuarioCommand
     {
         public string NomeUsuario { get; set; }
         public string ImagemUrl { get; set; }

@@ -3,40 +3,57 @@ using FDevsQuiz.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FDevsQuiz.Controllers
 {
     [Controller]
     [Route("usuarios")]
-    public class UsuarioController : BaseController
+    public class UsuarioController : ControllerBase
     {
-        public override string Filename => "usuarios.json";
+        public string Filename => "usuarios.json";
+
+        private string Fullname { get => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", Filename); }
+
+        protected async Task<ICollection<T>> CarregarDadosAsync<T>()
+        {
+            using var openStream = System.IO.File.OpenRead(Fullname);
+            return await JsonSerializer.DeserializeAsync<ICollection<T>>(openStream, new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+        }
+
+        private async Task SalvarDadosAsync<T>(ICollection<T> dados)
+        {
+            using FileStream createStream = System.IO.File.Create(Fullname);
+            await JsonSerializer.SerializeAsync(createStream, dados, new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+        }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<dynamic>>> Quizzes()
+        public async Task<ActionResult<ICollection<Usuario>>> Usuarios()
         {
-            var usuarios = await CarregarDadosAsync<dynamic>();
-
-            return Ok(usuarios);
+            return Ok(await CarregarDadosAsync<Usuario>());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> Quiz([FromRoute] long id)
+        public async Task<ActionResult<Usuario>> Usuario([FromRoute] long id)
         {
             var usuarios = await CarregarDadosAsync<Usuario>();
-            var usuario = usuarios.Where(u => u.CodigoUsuario == id).FirstOrDefault();
-            return Ok(usuario);
+            return Ok(usuarios.Where(u => u.CodigoUsuario == id).FirstOrDefault());
         }
 
         [HttpPost]
-        public async Task<ActionResult<Usuario>> Adicionar([FromBody] AdicionarUsuarioCommand command)
+        public async Task<ActionResult<Usuario>> Adicionar([FromBody] UsuarioCommand command)
         {
             if (string.IsNullOrEmpty(command.NomeUsuario))
-                throw new Exception("Nomer do usuário obrigatório");
-
-            var usuarios = await CarregarDadosAsync<Usuario>();
+                throw new Exception("Nome do usuário obrigatório");
 
             var usuario = new Usuario
             {
@@ -45,7 +62,8 @@ namespace FDevsQuiz.Controllers
                 ImagemUrl = command.ImagemUrl
             };
 
-            // encontra o maior numero do codigo do usuario e incrementa 1 para o novo codigo
+            var usuarios = await CarregarDadosAsync<Usuario>();
+            // encontra ultimo codigo e incrementa 1 para gerar novo codigo
             usuario.CodigoUsuario = usuarios.Select(u => u.CodigoUsuario).ToList().Max() + 1;
 
             usuarios.Add(usuario);
@@ -56,17 +74,35 @@ namespace FDevsQuiz.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar([FromRoute] long id, [FromBody] AtualizarUsuarioCommand command)
+        public async Task<IActionResult> Atualizar([FromRoute] long id, [FromBody] UsuarioCommand command)
         {
+            if (string.IsNullOrEmpty(command.NomeUsuario))
+                throw new Exception("Nome do usuário obrigatório");
+
             var usuarios = await CarregarDadosAsync<Usuario>();
             var usuario = usuarios.Where(u => u.CodigoUsuario == id).FirstOrDefault();
             
             if (usuario == null)
-                return NotFound();
+                return NotFound("Usuário não encontrado.");
 
             usuario.NomeUsuario = command.NomeUsuario;
-            usuario.Pontuacao = command.Pontuacao;
             usuario.ImagemUrl = command.ImagemUrl;
+
+            await SalvarDadosAsync(usuarios);
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}/pontuacao")]
+        public async Task<IActionResult> Pontuacao([FromRoute] long id, [FromBody] PontuacaoCommand command)
+        {
+            var usuarios = await CarregarDadosAsync<Usuario>();
+            var usuario = usuarios.Where(u => u.CodigoUsuario == id).FirstOrDefault();
+
+            if (usuario == null)
+                return NotFound("Usuário não encontrado");
+
+            usuario.Pontuacao = command.Pontuacao;
 
             await SalvarDadosAsync(usuarios);
 
@@ -83,6 +119,5 @@ namespace FDevsQuiz.Controllers
 
             return NoContent();
         }
-
     }
 }
