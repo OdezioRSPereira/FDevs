@@ -1,4 +1,6 @@
-﻿namespace FDevsQuiz.Model
+﻿using System;
+
+namespace FDevsQuiz.Model
 {
     public class Usuario
     {

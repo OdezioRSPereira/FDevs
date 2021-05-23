@@ -1,53 +1,42 @@
-﻿using FDevsQuiz.Model;
-using FDevsQuiz.Command;
+﻿using FDevsQuiz.Command;
+using FDevsQuiz.Controllers.Base;
+using FDevsQuiz.Model;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.IO;
-using System.Text.Json;
 
 namespace FDevsQuiz.Controllers
 {
     [Controller]
     [Route("quizzes")]
-    public class QuizController : ControllerBase
+    public class QuizController : AbstractController<long, Quiz>
     {
-        public string Filename => "quizzes.json";
 
-        private string Fullname { get => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", Filename); }
+        protected override string Filename => "quizzes.json";
 
-        protected async Task<ICollection<T>> CarregarDadosAsync<T>()
+        protected override Quiz Item(ICollection<Quiz> dados, long id)
         {
-            using var openStream = System.IO.File.OpenRead(Fullname);
-            return await JsonSerializer.DeserializeAsync<ICollection<T>>(openStream, new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+            return dados.Where(q => q.Codigo == id).FirstOrDefault();
         }
 
-        private async Task SalvarDadosAsync<T>(ICollection<T> dados)
+        protected override Quiz GerarChave(ICollection<Quiz> dados, Quiz model)
         {
-            using FileStream createStream = System.IO.File.Create(Fullname);
-            await JsonSerializer.SerializeAsync(createStream, dados, new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+            model.Codigo = dados.Select(q => q.Codigo).ToList().Max() + 1;
+            return model;
         }
 
         [HttpGet]
         public async Task<ActionResult<ICollection<Quiz>>> Quizzes()
         {
-            return Ok(await CarregarDadosAsync<Quiz>());
+            return Ok(await Dados());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Quiz>> Quiz([FromRoute] long id)
+        public ActionResult<Quiz> Quiz([FromRoute] long id)
         {
-            var quizzes = await CarregarDadosAsync<Quiz>();
-            var quiz = quizzes.Where(u => u.Codigo == id).FirstOrDefault();
-            return Ok(quiz);
+            return Ok(FindById(id));
         }
 
         [HttpPost]
@@ -65,7 +54,7 @@ namespace FDevsQuiz.Controllers
             if (command.Perguntas.Where(p => p.Alternativas?.Count != 4).Count() > 0)
                 throw new Exception("As perguntas do quiz devem conter 4 alternativas");
 
-            var quizzes = await CarregarDadosAsync<Quiz>();
+            var quizzes = await Dados();
 
             var quiz = new Quiz()
             {
@@ -88,10 +77,10 @@ namespace FDevsQuiz.Controllers
                     Alternativas = new List<Alternativa>()
                 };
 
-                var correta = perguntaCommand.Alternativas.Where(a => a.Correta == true).Count();
-                if (correta == 0)
+                var corretas = perguntaCommand.Alternativas.Where(a => a.Correta == true).Count();
+                if (corretas == 0)
                     throw new Exception($"A pergunta {i} não possui uma alternativa correta");
-                else if (correta > 1)
+                else if (corretas > 1)
                     throw new Exception($"A pergunta {i} possui mais de uma alternativa correta");
 
                 foreach (var alternativaCommand in perguntaCommand.Alternativas)
@@ -111,12 +100,7 @@ namespace FDevsQuiz.Controllers
                 quiz.Perguntas.Add(pergunta);
             }
 
-            // encontra ultimo codigo e incrementa 1 para gerar novo codigo
-            quiz.Codigo = quizzes.Select(q => q.Codigo).ToList().Max() + 1;
-
-            quizzes.Add(quiz);
-
-            await SalvarDadosAsync(quizzes);
+            quiz = await Adicionar(quiz);
 
             return Created("quizzes/{id}", quiz);
         }
@@ -130,7 +114,7 @@ namespace FDevsQuiz.Controllers
             if (string.IsNullOrEmpty(command.Nivel))
                 throw new Exception("Nível do quiz é obrigatório");
 
-            var quizzes = await CarregarDadosAsync<Quiz>();
+            var quizzes = await Dados();
             var quiz = quizzes.Where(u => u.Codigo == id).FirstOrDefault();
 
             if (quiz == null)
@@ -140,7 +124,7 @@ namespace FDevsQuiz.Controllers
             quiz.Nivel = command.Nivel;
             quiz.ImagemUrl = command.ImagemUrl;
 
-            await SalvarDadosAsync(quizzes);
+            await SalvarDadosAsync();
 
             return NoContent();
         }
@@ -148,10 +132,7 @@ namespace FDevsQuiz.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Excluir([FromRoute] long id)
         {
-            var quizzes = await CarregarDadosAsync<Quiz>();
-            quizzes = quizzes.Where(u => u.Codigo != id).ToList();
-
-            await SalvarDadosAsync(quizzes);
+            await RemoveById(id);
 
             return NoContent();
         }
