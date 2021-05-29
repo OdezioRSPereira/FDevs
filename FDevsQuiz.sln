@@ -3,7 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FDevsQuiz", "FDevsQuiz\FDevsQuiz.csproj", "{511052A4-1688-48FE-9467-542552F1BE6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FDevsQuiz.Application", "FDevsQuiz.Application\FDevsQuiz.Application.csproj", "{511052A4-1688-48FE-9467-542552F1BE6D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0355D446-46C0-41E0-BC2A-DA2328901BD0} = {0355D446-46C0-41E0-BC2A-DA2328901BD0}
+		{BD9CF1ED-F2B9-4C5A-8B61-FDDA1CB830B5} = {BD9CF1ED-F2B9-4C5A-8B61-FDDA1CB830B5}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FDevsQuiz.Domain", "FDevsQuiz.Domain\FDevsQuiz.Domain.csproj", "{0355D446-46C0-41E0-BC2A-DA2328901BD0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FDevsQuiz.Infra", "FDevsQuiz.Infra\FDevsQuiz.Infra.csproj", "{BD9CF1ED-F2B9-4C5A-8B61-FDDA1CB830B5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0355D446-46C0-41E0-BC2A-DA2328901BD0} = {0355D446-46C0-41E0-BC2A-DA2328901BD0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +26,14 @@ Global
 		{511052A4-1688-48FE-9467-542552F1BE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{511052A4-1688-48FE-9467-542552F1BE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{511052A4-1688-48FE-9467-542552F1BE6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0355D446-46C0-41E0-BC2A-DA2328901BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0355D446-46C0-41E0-BC2A-DA2328901BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0355D446-46C0-41E0-BC2A-DA2328901BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0355D446-46C0-41E0-BC2A-DA2328901BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD9CF1ED-F2B9-4C5A-8B61-FDDA1CB830B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD9CF1ED-F2B9-4C5A-8B61-FDDA1CB830B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD9CF1ED-F2B9-4C5A-8B61-FDDA1CB830B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD9CF1ED-F2B9-4C5A-8B61-FDDA1CB830B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
