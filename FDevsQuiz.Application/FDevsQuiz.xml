@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FDevsQuiz</name>
+    </assembly>
+    <members>
+        <member name="M:FDevsQuiz.Controllers.UsuarioController.Usuarios">
+            <summary>
+            Retorna os usuários cadastrados na aplicação
+            </summary>
+        </member>
+        <member name="M:FDevsQuiz.Controllers.UsuarioController.Usuario(System.Int64)">
+            <summary>
+            Localiza um usuário cadastrado na  aplicação através do identificador
+            </summary>
+            <param name="id">Código do usuário</param>
+        </member>
+    </members>
+</doc>
