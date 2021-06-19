@@ -1,9 +1,14 @@
+using DbUp;
 using FDevsQuiz.Application.ApiVersion.Swagger;
+using FDevsQuiz.Application.Middleware;
+using FDevsQuiz.Application.Validator;
 using FDevsQuiz.Domain.Interface;
 using FDevsQuiz.Domain.Repository;
 using FDevsQuiz.Domain.Services;
 using FDevsQuiz.Infra.Data.Context;
 using FDevsQuiz.Infra.Data.Repository;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +17,8 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -59,6 +66,16 @@ namespace FDevsQuiz
                 options.SubstituteApiVersionInUrl = true;
             });
 
+            services.AddMvc().AddFluentValidation(f =>
+            {
+                f.ImplicitlyValidateChildProperties = true;
+                f.RegisterValidatorsFromAssemblyContaining<Startup>();
+            });
+            services.AddTransient<IValidatorFactory, ServiceProviderValidatorFactory>();
+            services.AddTransient<IValidator, QuizValidator>();
+            services.AddTransient<IValidator, PerguntaValidator>();
+            services.AddTransient<IValidator, AlternativaValidator>();
+
             services.AddSwaggerGen();
 
             services.ConfigureOptions<ConfigureSwaggerOptions>();
@@ -73,6 +90,19 @@ namespace FDevsQuiz
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
+            var connectionString = Configuration.GetConnectionString("FDevsQuizConnection");
+
+            EnsureDatabase.For.SqlDatabase(connectionString);
+
+            var upgrader = DeployChanges.To.SqlDatabase(connectionString)
+                .WithScriptsFromFileSystem(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "Script"))
+                .Build();
+
+            var result = upgrader.PerformUpgrade();
+
+            if (!result.Successful)
+                throw new Exception("Falha ao atualizar o banco de dados.");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -83,6 +113,8 @@ namespace FDevsQuiz
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware(typeof(ExceptionMiddleware));
 
             app.UseEndpoints(endpoints =>
             {

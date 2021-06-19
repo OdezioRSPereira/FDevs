@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.IO;
@@ -32,7 +33,8 @@ namespace FDevsQuiz.Application.ApiVersion.Swagger
             //Caso exista arquivo então adiciona-lo
             if (File.Exists(xmlDocumentPath))
                 options.IncludeXmlComments(xmlDocumentPath);
-          //  options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "ApiVersioning.xml"));
+
+            options.AddFluentValidationRules();
         }
 
         static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
