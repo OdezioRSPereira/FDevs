@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace FDevsQuiz.Application.ApiVersion.Swagger
@@ -34,7 +35,35 @@ namespace FDevsQuiz.Application.ApiVersion.Swagger
             if (File.Exists(xmlDocumentPath))
                 options.IncludeXmlComments(xmlDocumentPath);
 
-            options.AddFluentValidationRules();
+            //options.AddFluentValidationRules();
+
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = @"API utiliza autenticação. Informe o token de acesso no campo abaixo.
+                                Exemplo: 'Bearer 12345abcdef...'",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Scheme = "oauth2",
+                        Name = "Bearer",
+                        In = ParameterLocation.Header
+                    },
+                    new List<string>()
+                }
+            });
         }
 
         static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)

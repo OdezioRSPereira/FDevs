@@ -3,7 +3,8 @@ using FDevsQuiz.Domain.Model;
 
 namespace FDevsQuiz.Domain.Repository
 {
-    public interface IContatoRepository: ICrudRepository<long, AppContato>
+    public interface IContatoRepository : ICrudRepository<long, AppContato>
     {
+        AppContato FindByEmail(string email);
     }
 }
