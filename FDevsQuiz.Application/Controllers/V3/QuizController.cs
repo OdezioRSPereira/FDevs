@@ -9,7 +9,6 @@ using System.Collections.Generic;
 namespace FDevsQuiz.Application.Controllers.V3
 {
     [Authorize(Roles = "ENTREVISTADO")]
-    [Controller]
     [ApiVersion("3.0")]
     [Route("v{version:apiVersion}/quizzes")]
     public class QuizController : BaseController

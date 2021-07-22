@@ -124,21 +124,3 @@ Select 2 As Codigo, 'Intermediário' As Descricao Where Not Exists (Select 1 Fro
 Select 3 As Codigo, 'Difícil' As Descricao Where Not Exists (Select 1 From Enq_Nivel Where Codigo = 3) Union All
 Select 4 As Codigo, 'Especialista' As Descricao Where Not Exists (Select 1 From Enq_Nivel Where Codigo = 4);
 Go
-
-If Not Exists (Select * From Sys.Columns Where Object_ID = Object_ID('App_Produto') And Name = 'CodigoMarca')
-Begin
-    ALTER TABLE App_Produto ADD CodigoMarca Numeric(10)
-	CONSTRAINT App_Produto_Marca_FK FOREIGN KEY (CodigoMarca)
-    REFERENCES App_Marca(CodigoMarca);
-End
-Go
-
-Update pro 
-   Set pro.CodigoMarca = IsNull(pro.CodigoEmpresaNegocio, pro.CodigoEmpresa)
-  From App_Produto pro
- Where pro.CodigoMarca Is Null
-   And pro.ExibirPrateleira = 1
-   And Exists (Select 1 
-                 From App_Marca mar 
-				Where mar.CodigoMarca = IsNull(pro.CodigoEmpresaNegocio, pro.CodigoEmpresa));
-Go

@@ -39,6 +39,7 @@ namespace FDevsQuiz.Domain.Services
             {
                 Nome = command.Nome,
                 SobreNome = command.SobreNome,
+                ImagemUrl = command.ImagemUrl,
                 Email = command.Email,
             });
 

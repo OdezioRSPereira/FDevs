@@ -1,5 +1,4 @@
 ﻿using FDevsQuiz.Domain.Command;
-using FDevsQuiz.Domain.Repository;
 using FDevsQuiz.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace FDevsQuiz.Application.Controllers.V3
 {
     [Authorize]
-    [Controller]
     [ApiVersion("3.0")]
     [Route("v{version:apiVersion}/respostas")]
     public class RespostaController : ControllerBase

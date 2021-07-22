@@ -5,6 +5,7 @@ using System.Security.Claims;
 
 namespace FDevsQuiz.Application.Controllers.V3.Base
 {
+    [ApiController]
     public abstract class BaseController: ControllerBase
     {
         protected long? CodigoUsuario()

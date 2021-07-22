@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 namespace FDevsQuiz.Application.Controllers.V3
 {
     [Authorize]
-    [Controller]
     [ApiVersion("3.0")]
     [Route("v{version:apiVersion}/autenticacao")]
     public class AutenticacaoController : BaseController
