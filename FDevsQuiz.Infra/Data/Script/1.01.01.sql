@@ -96,7 +96,7 @@ IF OBJECT_ID('Enq_Resposta') IS NULL BEGIN
 Create Table Enq_Resposta (
   Codigo             Numeric(10)  Identity(1, 1),
   CodigoContato      Numeric(10)  Not Null,
-  CodigoAlternativa  Numeric(10)  Not Null,
+  CodigoAlternativa  Numeric(10)  Null,
   DataAtualizacao    DateTime     Null,
   DataCadastro       DateTime     Null
   Constraint Enq_Resposta_PK Primary Key Clustered (Codigo),

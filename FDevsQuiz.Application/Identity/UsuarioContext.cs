@@ -18,5 +18,6 @@ namespace FDevsQuiz.Application.Identity
         public long? Codigo => _accessor.HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)?.Select(c => string.IsNullOrEmpty(c.Value) ? null : (int?)Convert.ToInt32(c.Value)).FirstOrDefault();
 
         public string Nome => _accessor.HttpContext.User.Identity.Name;
+
     }
 }

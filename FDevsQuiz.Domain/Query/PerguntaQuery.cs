@@ -6,6 +6,7 @@ namespace FDevsQuiz.Domain.Query
     {
         public long Codigo { get; set; }
         public string Titulo { get; set; }
+        public RespostaQuery Resposta { get; set; } 
         public ICollection<AlternativaQuery> Alternativas { get; set; }
     }
 }

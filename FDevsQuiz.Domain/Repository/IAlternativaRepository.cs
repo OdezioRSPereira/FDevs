@@ -7,5 +7,6 @@ namespace FDevsQuiz.Domain.Repository
     public interface IAlternativaRepository : ICrudRepository<long, EnqAlternativa>
     {
         IEnumerable<EnqAlternativa> FindCodigoPergunta(long codigoPergunta);
+        bool Exists(long codigoPergunta, long codigoAlternativa);
     }
 }

@@ -15,7 +15,7 @@ namespace FDevsQuiz.Application.Controllers.V3
     [Authorize]
     [Controller]
     [ApiVersion("3.0")]
-    [Route("v{version:apiVersion}/authenticacao")]
+    [Route("v{version:apiVersion}/autenticacao")]
     public class AutenticacaoController : BaseController
     {
         private readonly IUsuario _usuario;

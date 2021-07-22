@@ -6,9 +6,13 @@
 
 	<ItemGroup>
 	  <None Remove="Data\Script\1.01.01.sql" />
+	  <None Remove="Data\Script\1.01.02.sql" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Data\Script\1.01.02.sql">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	  <EmbeddedResource Include="Data\Script\1.01.01.sql">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>

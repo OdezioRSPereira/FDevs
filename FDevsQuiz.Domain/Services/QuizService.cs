@@ -1,5 +1,7 @@
 ﻿using FDevsQuiz.Domain.Command;
 using FDevsQuiz.Domain.Enumerable;
+using FDevsQuiz.Domain.Exceptions;
+using FDevsQuiz.Domain.Interface;
 using FDevsQuiz.Domain.Model;
 using FDevsQuiz.Domain.Query;
 using FDevsQuiz.Domain.Repository;
@@ -11,18 +13,48 @@ namespace FDevsQuiz.Domain.Services
 {
     public class QuizService
     {
+        private readonly IUsuario _usuario;
         private readonly IQuizRepository _quizRepository;
         private readonly IPerguntaRepository _perguntaRepository;
+        private readonly IRespostaRepository _respostaRepository;
         private readonly IAlternativaRepository _alternativaRepository;
 
         public QuizService(
+            IUsuario usuario,
             IQuizRepository quizRepository,
             IPerguntaRepository perguntaRepository,
+            IRespostaRepository respostaRepository,
             IAlternativaRepository alternativaRepository)
         {
+            _usuario = usuario;
             _quizRepository = quizRepository;
             _perguntaRepository = perguntaRepository;
+            _respostaRepository = respostaRepository;
             _alternativaRepository = alternativaRepository;
+        }
+
+        public QuizPontuacaoQuery ObterPontuacao()
+        {
+            return _perguntaRepository.ObterPontuacao(_usuario.Codigo.Value);
+        }
+
+        public void AdicionarResposta(RespostaCommand command)
+        {
+            if (command.CodigoAlternativa.HasValue)
+            {
+                if (!_alternativaRepository.Exists(command.CodigoPergunta, command.CodigoAlternativa.Value))
+                    throw new ValidateException("Alternativa não encontrada.");
+            } else if (!_perguntaRepository.Exists(command.CodigoPergunta))
+                throw new ValidateException("Pergunta não encontrada.");
+
+            _respostaRepository.ExcluirResposta(_usuario.Codigo.GetValueOrDefault(0), command.CodigoPergunta);
+
+            _respostaRepository.Add(new EnqResposta
+            {
+                CodigoPergunta = command.CodigoPergunta,
+                CodigoAlternativa = command.CodigoAlternativa,
+                CodigoContato = _usuario.Codigo.GetValueOrDefault(0)
+            });
         }
 
         public ICollection<QuizQuery> FindAll()
@@ -88,10 +120,13 @@ namespace FDevsQuiz.Domain.Services
 
         private PerguntaQuery PerguntaToQuery(EnqPergunta pergunta)
         {
+            var resposta = _respostaRepository.FindByPergunta(_usuario.Codigo.Value, pergunta.Codigo);
+
             return new PerguntaQuery
             {
                 Codigo = pergunta.Codigo,
                 Titulo = pergunta.Titulo,
+                Resposta = resposta,
                 Alternativas = new List<AlternativaQuery>()
             };
         }

@@ -1,5 +1,6 @@
 ﻿using FDevsQuiz.Domain.Interface;
 using FDevsQuiz.Domain.Model;
+using FDevsQuiz.Domain.Query;
 using System.Collections.Generic;
 
 namespace FDevsQuiz.Domain.Repository
@@ -8,5 +9,6 @@ namespace FDevsQuiz.Domain.Repository
     {
 
         IEnumerable<EnqPergunta> FindCodigoQuiz(long codigoQuiz);
+        QuizPontuacaoQuery ObterPontuacao(long codigoContato);
     }
 }

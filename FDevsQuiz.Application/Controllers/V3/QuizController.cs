@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace FDevsQuiz.Application.Controllers.V3
 {
-    [Authorize]
+    [Authorize(Roles = "ENTREVISTADO")]
     [Controller]
     [ApiVersion("3.0")]
     [Route("v{version:apiVersion}/quizzes")]
@@ -25,6 +25,12 @@ namespace FDevsQuiz.Application.Controllers.V3
         public ActionResult<ICollection<QuizQuery>> ObterTodos()
         {
             return Ok(_quizService.FindAll());
+        }
+
+        [HttpGet("pontuacao")]
+        public ActionResult<QuizPontuacaoQuery> ObterPontuacao()
+        {
+            return Ok(_quizService.ObterPontuacao());
         }
 
         [HttpGet("{id}")]

@@ -9,6 +9,7 @@ namespace FDevsQuiz.Domain.Model
         [Key]
         public long Codigo { get; set; }
         public long CodigoContato { get; set; }
-        public long CodigoAlternativa { get; set; }
+        public long CodigoPergunta { get; set; }
+        public long? CodigoAlternativa { get; set; }
     }
 }
