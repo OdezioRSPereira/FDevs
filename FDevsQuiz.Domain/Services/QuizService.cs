@@ -103,7 +103,7 @@ namespace FDevsQuiz.Domain.Services
             return quiz;
         }
 
-        private QuizQuery QuizToQuery(EnqQuiz quiz)
+        private static QuizQuery QuizToQuery(EnqQuiz quiz)
         {
             if (quiz == null)
                 return null;
@@ -131,7 +131,7 @@ namespace FDevsQuiz.Domain.Services
             };
         }
 
-        private AlternativaQuery AlternativaToQuery(EnqAlternativa alternativa)
+        private static AlternativaQuery AlternativaToQuery(EnqAlternativa alternativa)
         {
             return new AlternativaQuery
             {
@@ -184,7 +184,7 @@ namespace FDevsQuiz.Domain.Services
                 else if (corretas > 1)
                     throw new Exception($"A pergunta {i} possui mais de uma alternativa correta");
 
-                if (command.Alternativas.Where(a => string.IsNullOrEmpty(a.Titulo)).Count() > 0)
+                if (command.Alternativas.Where(a => string.IsNullOrEmpty(a.Titulo)).Any())
                     throw new Exception($"A pergunta '{i}' possui alternativa sem título");
 
 
@@ -207,7 +207,7 @@ namespace FDevsQuiz.Domain.Services
             if ((command.Perguntas == null) || (command.Perguntas.Count == 0))
                 throw new Exception("O quiz deve conter pelo menos uma pergunta");
 
-            if (command.Perguntas.Where(p => p.Alternativas?.Count != 4).Count() > 0)
+            if (command.Perguntas.Where(p => p.Alternativas?.Count != 4).Any())
                 throw new Exception("As perguntas do quiz devem conter 4 alternativas");
 
             var quiz = _quizRepository.Add(new EnqQuiz

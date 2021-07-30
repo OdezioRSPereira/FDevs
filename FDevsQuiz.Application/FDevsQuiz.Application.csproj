@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -9,33 +9,30 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Remove="Data\quizzes.json" />
-		<Content Remove="Data\usuarios.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="Data\quizzes.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
-		<EmbeddedResource Include="Data\usuarios.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</EmbeddedResource>
+	  <None Remove="Properties\PublishProfiles\FDevsQuiz - Web Deploy.pubxml" />
+	  <None Remove="Properties\PublishProfiles\FDevsQuiz - Web Deploy1.pubxml" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="dbup-sqlserver" Version="4.5.0" />
-		<PackageReference Include="FluentValidation.AspNetCore" Version="10.2.3" />
-		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.0.0" />
+		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.16" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\FDevsQuiz.Domain\FDevsQuiz.Domain.csproj" />
 		<ProjectReference Include="..\FDevsQuiz.Infra\FDevsQuiz.Infra.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
 
 

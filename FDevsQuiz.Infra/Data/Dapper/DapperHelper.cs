@@ -18,7 +18,7 @@ namespace FDevsQuiz.Infra.Data.Dapper
         public static IEnumerable<PropertyInfo> FieldKey()
         {
             var key = typeof(TEntity).GetProperties().Where(p => p.GetCustomAttributes(typeof(KeyAttribute), true).Length > 0);
-            if ((key == null) || (key.Count() == 0))
+            if ((key == null) || (!key.Any()))
                 key = typeof(TEntity).GetProperties().Where(p => p.GetCustomAttributes(typeof(ExplicitKeyAttribute), true).Length > 0);
 
             return key;

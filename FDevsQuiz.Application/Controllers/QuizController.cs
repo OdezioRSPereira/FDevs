@@ -1,4 +1,4 @@
-﻿using FDevsQuiz.Application.Controllers.V3.Base;
+﻿using FDevsQuiz.Application.Controllers.Base;
 using FDevsQuiz.Domain.Command;
 using FDevsQuiz.Domain.Query;
 using FDevsQuiz.Domain.Services;
@@ -6,11 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace FDevsQuiz.Application.Controllers.V3
+namespace FDevsQuiz.Application.Controllers
 {
-    [Authorize(Roles = "ENTREVISTADO")]
-    [ApiVersion("3.0")]
-    [Route("v{version:apiVersion}/quizzes")]
+    [Authorize]
+    [Route("quizzes")]
     public class QuizController : BaseController
     {
         private readonly QuizService _quizService;

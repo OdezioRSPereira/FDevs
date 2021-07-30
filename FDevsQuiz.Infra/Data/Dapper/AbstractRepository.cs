@@ -18,7 +18,7 @@ namespace FDevsQuiz.Infra.Data.Dapper
             _context = context;
         }
 
-        private TEntity NewInstance(ID id)
+        private static TEntity NewInstance(ID id)
         {
             var key = DapperHelper<TEntity>.FieldKey().FirstOrDefault();
             var model = (TEntity)Activator.CreateInstance(typeof(TEntity));

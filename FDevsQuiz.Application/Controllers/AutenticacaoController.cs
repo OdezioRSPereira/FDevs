@@ -1,4 +1,4 @@
-﻿using FDevsQuiz.Application.Controllers.V3.Base;
+﻿using FDevsQuiz.Application.Controllers.Base;
 using FDevsQuiz.Application.Identity;
 using FDevsQuiz.Domain.Command;
 using FDevsQuiz.Domain.Interface;
@@ -10,11 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
-namespace FDevsQuiz.Application.Controllers.V3
+namespace FDevsQuiz.Application.Controllers
 {
     [Authorize]
-    [ApiVersion("3.0")]
-    [Route("v{version:apiVersion}/autenticacao")]
+    [Route("autenticacao")]
     public class AutenticacaoController : BaseController
     {
         private readonly IUsuario _usuario;

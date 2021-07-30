@@ -1,27 +1,29 @@
 using DbUp;
-using FDevsQuiz.Application.ApiVersion.Swagger;
 using FDevsQuiz.Application.Identity;
 using FDevsQuiz.Application.Middleware;
-using FDevsQuiz.Application.Validator;
 using FDevsQuiz.Domain.Interface;
 using FDevsQuiz.Domain.Repository;
 using FDevsQuiz.Domain.Services;
 using FDevsQuiz.Infra.Data.Context;
 using FDevsQuiz.Infra.Data.Repository;
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -35,11 +37,22 @@ namespace FDevsQuiz
             Configuration = configuration;
         }
 
+        private static string GetXmlCommentsPath()
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, String.Format("{0}.xml", AppName()));
+        }
+
+        private static string AppName()
+        {
+            return Assembly.GetCallingAssembly().GetName().Name;
+        }
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IDbContext, DbContext>();
 
             services.AddScoped<IContatoRepository, ContatoRepository>();
@@ -55,7 +68,6 @@ namespace FDevsQuiz
 
             services.AddApiVersioning(o =>
             {
-                o.UseApiBehavior = false;
                 o.ReportApiVersions = true;
                 o.AssumeDefaultVersionWhenUnspecified = true;
                 o.DefaultApiVersion = new ApiVersion(1, 0);
@@ -65,22 +77,6 @@ namespace FDevsQuiz
                     new QueryStringApiVersionReader(),
                     new UrlSegmentApiVersionReader());
             });
-
-            services.AddVersionedApiExplorer(options =>
-            {
-                options.GroupNameFormat = "'v'VVV";
-                options.SubstituteApiVersionInUrl = true;
-            });
-
-            services.AddMvc().AddFluentValidation(f =>
-            {
-                f.ImplicitlyValidateChildProperties = true;
-                f.RegisterValidatorsFromAssemblyContaining<Startup>();
-            });
-            services.AddTransient<IValidatorFactory, ServiceProviderValidatorFactory>();
-            services.AddTransient<IValidator, QuizValidator>();
-            services.AddTransient<IValidator, PerguntaValidator>();
-            services.AddTransient<IValidator, AlternativaValidator>();
 
             var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("secret"));
             services.AddAuthentication(x =>
@@ -101,9 +97,41 @@ namespace FDevsQuiz
                 };
             });
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "FDevs Quiz - API",
+                    Version = "v1",
+                    Description = "Documentação da API do FDevs Quiz."
+                });
 
-            services.ConfigureOptions<ConfigureSwaggerOptions>();
+              //  c.IncludeXmlComments(GetXmlCommentsPath());
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new List<string>()
+                    }
+                });
+            });
 
             services.AddControllers().AddJsonOptions(options =>
             {
@@ -113,7 +141,7 @@ namespace FDevsQuiz
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var connectionString = Configuration.GetConnectionString("FDevsQuizConnection");
 
@@ -154,20 +182,15 @@ namespace FDevsQuiz
             });
 
             // Habilita o uso do Swagger
-            app.UseSwagger(c =>
-            {
-                c.SerializeAsV2 = true;
-            });
+            app.UseSwagger();
 
             // Habilitar o middleware para servir o swagger-ui (HTML, JS, CSS, etc.), 
             // Especificando o Endpoint JSON Swagger.
             app.UseSwaggerUI(c =>
             {
-                foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
-                {
-                    c.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                }
-                c.RoutePrefix = string.Empty; //Adicione algum prefixo da URL caso queira
+                c.SwaggerEndpoint("./swagger/v1/swagger.json", "V1");
+                c.RoutePrefix = string.Empty;
+                c.DocExpansion(DocExpansion.None);
             });
         }
     }
